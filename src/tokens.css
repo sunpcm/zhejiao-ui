@@ -1,0 +1,82 @@
+/* 折角令牌。色值只写在这里。拷到别的仓库时整份带走，不要另起色板。 */
+
+:root {
+  --font-ui: "Noto Sans SC", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+  --font-doc: "Noto Serif SC", "Songti SC", "Noto Serif CJK SC", serif;
+  --font-mono: "IBM Plex Mono", "Noto Sans SC", ui-monospace, monospace;
+
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-xl: 28px;
+  --text-2xl: 40px;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+
+  --leading-tight: 1.25;
+  --leading-ui: 1.5;
+  --leading-doc: 1.8;
+  --leading-code: 1.6;
+  --measure: 66ch;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-panel: 2px;
+  --radius-control: 4px;
+
+  --hairline: 1px;
+  --focus-width: 2px;
+  --focus-offset: 2px;
+  --fold-size: 40px;
+
+  --dur: 160ms;
+  --dur-slow: 240ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  color-scheme: light;
+  --bg: #d0e2dc;
+  --sheet: #f4f8f7;
+  --inset: #e5f0ec;
+  --ink: #1a2b27;
+  --ink-soft: #2c4540;
+  --muted: #496259;
+  --line: #5a7b74;
+  --accent: #1b5f78;
+  --accent-ink: #f4f8f7;
+  --accent-press: #164e63;
+  --accent-wash: #d3e4e8;
+  --danger: #8e3b34;
+  --ok: #1f6b45;
+  --warn: #7e5416;
+  --fold: #b7cfc7;
+  --focus: #1a2b27;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0e1614;
+  --sheet: #1c2824;
+  --inset: #16211e;
+  --ink: #e6f1ec;
+  --ink-soft: #c5d6d0;
+  --muted: #a3b8b0;
+  --line: #6e9086;
+  --accent: #9fcfd8;
+  --accent-ink: #102028;
+  --accent-press: #b7dde4;
+  --accent-wash: #243e3a;
+  --danger: #f0b2ab;
+  --ok: #9fcfb4;
+  --warn: #e4c48a;
+  --fold: #080c0b;
+  --focus: #e6f1ec;
+}
