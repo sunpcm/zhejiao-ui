@@ -1,4 +1,10 @@
-import type { Priority, Status, ThemeId, Ticket } from "./types";
+import type { Priority, Status, Surface, ThemeId, Ticket } from "./types";
+
+export const SURFACES: { id: Surface; name: string; path: string; line: string }[] = [
+  { id: "reading", name: "阅读", path: "/reading", line: "长文，一行大约 65 个字" },
+  { id: "product", name: "产品", path: "/product", line: "台账、表格和表单" },
+  { id: "infra", name: "运维", path: "/infra", line: "状态、数字和日志，再紧一档" },
+];
 
 export const THEMES: { id: ThemeId; name: string; words: string; index: string }[] = [
   { id: "qingge", name: "青格", words: "克制、清晰、网格、当代", index: "01" },

@@ -36,7 +36,7 @@ export function BoardPage() {
   const selectedAnywhere = selectedId;
 
   useEffect(() => {
-    document.title = "工作台 · 工单台";
+    document.title = "产品 · 工单台";
   }, []);
 
   function move(ticket: Ticket, status: Status) {
@@ -57,9 +57,9 @@ export function BoardPage() {
   return (
     <>
       <header className="page-head">
-        <h1>工作台</h1>
+        <h1>工单台账</h1>
         <p className="lede">
-          按状态分列。点一条工单，再改它的状态。筛选和选中会留着，切换主题不会清掉。
+          这是产品版面：表格、筛选和改状态靠在一起。点一条工单再改它的状态。筛选和选中会留着，换主题或换版面都不会清掉。
         </p>
       </header>
 

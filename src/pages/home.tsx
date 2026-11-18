@@ -1,14 +1,15 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { THEMES } from "../data";
+import { SURFACES, THEMES } from "../data";
 import { useStore } from "../store";
 import { useTheme } from "../theme";
 import type { ThemeId } from "../types";
 
 export function HomePage() {
-  const { theme, scheme, setTheme } = useTheme();
+  const { theme, scheme, surface, setTheme } = useTheme();
   const { pushToast } = useStore();
   const current = THEMES.find((item) => item.id === theme) ?? THEMES[0];
+  const surfaceName = SURFACES.find((item) => item.id === surface)?.name ?? "产品";
   const schemeName = scheme === "dark" ? "深色" : "浅色";
 
   useEffect(() => {
@@ -28,10 +29,10 @@ export function HomePage() {
           <h1>同一套工单台，三套看法</h1>
           <p className="lede">
             <span className="drop">这</span>
-            <span className="lede-body">套页面是内部工单台，用来登记、分派和改状态。三套主题共用同一批工单和同一组操作，只换已经锁死的视觉。样张可以切换整站，选择会留在这台浏览器里。控件走查在<Link to="/gallery">组件</Link>，改状态在<Link to="/board">工作台</Link>。</span>
+            <span className="lede-body">套页面是内部工单台。视觉是青格、刊次、硬边，三套锁死，互不折中。版面是另一根轴：阅读、产品、运维，三套主题都能用。样张只换视觉。长文在<Link to="/reading">阅读</Link>，台账在<Link to="/product">产品</Link>，状态和日志在<Link to="/infra">运维</Link>。</span>
           </p>
           <p className="now">
-            当前是{current.name}，{schemeName}。
+            当前是{current.name}，{schemeName}，{surfaceName}。
           </p>
         </div>
         <blockquote className="pull">
@@ -69,6 +70,21 @@ export function HomePage() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="block" aria-labelledby="surface-heading">
+        <h2 id="surface-heading">版面</h2>
+        <p className="section-note">
+          版面管疏密和信息结构，不管颜色和字体。文档里的建议搭配只是提示，这里不锁定。
+        </p>
+        <ol className="surface-list">
+          {SURFACES.map((item) => (
+            <li key={item.id}>
+              <Link to={item.path}>{item.name}</Link>
+              <span>{item.line}</span>
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section className="block" aria-labelledby="trait-heading">

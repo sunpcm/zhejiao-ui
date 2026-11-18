@@ -1,29 +1,33 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="qingge" data-scheme="light">
+<html lang="zh-CN" data-theme="qingge" data-scheme="light" data-surface="product">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>工单台 · 主题实验室</title>
     <meta
       name="description"
-      content="同一套工单台，三套已锁定的中文界面主题：青格、刊次、硬边。"
+      content="同一套工单台。视觉主题是青格、刊次、硬边；版面是阅读、产品、运维。"
     />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script>
       (function () {
         try {
           var themes = { qingge: 1, kanci: 1, yingbian: 1 };
+          var surfaces = { reading: 1, product: 1, infra: 1 };
           var theme = localStorage.getItem("zhejiao-theme");
           var scheme = localStorage.getItem("zhejiao-scheme");
+          var surface = localStorage.getItem("zhejiao-surface");
           if (!themes[theme]) theme = "qingge";
           if (scheme !== "light" && scheme !== "dark") {
             scheme = window.matchMedia("(prefers-color-scheme: dark)").matches
               ? "dark"
               : "light";
           }
+          if (!surfaces[surface]) surface = "product";
           var root = document.documentElement;
           root.setAttribute("data-theme", theme);
           root.setAttribute("data-scheme", scheme);
+          root.setAttribute("data-surface", surface);
         } catch (error) {
           /* 隐私模式写不进本地存储时，沿用默认浅色青格。 */
         }

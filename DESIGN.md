@@ -4,10 +4,46 @@
 
 产品是内部工单台，不是文档产品，也不是「折角」。
 
+两根轴分开。`data-theme` 和 `data-scheme` 只负责视觉：字体性格、颜色、圆角、分层、动效。`data-surface` 只负责版面疏密和信息结构。三套主题都能用阅读、产品、运维。文档里的建议搭配（刊次常配阅读，青格常配产品，硬边常配运维）只是提示，界面不锁定，也不当成默认组合。
+
+## 版面 data-surface
+
+同一套视觉 token 流过三种版面。换版面不换色板，不换字体家族，不换圆角和阴影公式。
+
+```yaml
+axis: surface
+attribute: data-surface
+persist: localStorage zhejiao-surface
+default: product
+profiles:
+  reading:
+    name: 阅读
+    route: /reading
+    intent: 说明和长文，不是营销首屏
+    type: 18px，行高 1.75
+    measure: 65ch
+    spacing: 比产品更松，控件更高
+  product:
+    name: 产品
+    route: /product
+    intent: 工单台账、表格、表单
+    type: 16px，行高 1.65
+    spacing: 当前这套紧凑的后台
+  infra:
+    name: 运维
+    route: /infra
+    intent: 状态、数字、日志。不是监控产品的仿制品
+    type: 14px，行高 1.45
+    figures: 等宽数字，编号和时间走 IBM Plex Mono
+    status: 绿 / 黄 / 红只表示通断和缓急
+```
+
+运维的状态色是 `--state-ok`、`--state-warn`、`--state-bad`，跟主题的强调色分开。浅色大约是 `#0C7A43`、`#8A5A00`、`#9F1239`；深色大约是 `#3DDC97`、`#E6B15A`、`#FF8D86`。它们不替换青格的青绿、刊次的朱红或硬边的琥珀。
+
 ## 共用
 
-- 技术：Vite、React、TypeScript。主题用 `data-theme`，明暗用 `data-scheme`。不使用 Tailwind，也不用组件库的默认紫色。
-- 正文不小于 16px。长文控制在约 65ch。行高随字号降低：16px 约 1.65，标题约 1.15–1.35。
+- 技术：Vite、React、TypeScript。主题用 `data-theme`，明暗用 `data-scheme`，版面用 `data-surface`。不使用 Tailwind，也不用组件库的默认紫色。
+- 产品和阅读的正文不小于 16px。阅读长文控制在约 65ch。运维为了更密，界面字号是 14px。行高随字号降低。
 - 中文标签用正常中文，不用全大写拉丁字距。
 - 西文和汉字分开走：字体栈把西文家族放在前面，Noto 放在后面。Google Fonts 的 CSS 已按 `unicode-range` 分包。`font-display: swap`。每套页面的主层级不超过三个字重。
 - 焦点只用 `outline`，不把焦点做成另一层阴影。浅底、深底、实心强调按钮上都要看得见。

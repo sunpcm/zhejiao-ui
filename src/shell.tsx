@@ -1,17 +1,21 @@
-import { NavLink, Outlet } from "react-router-dom";
-import { THEMES } from "./data";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { SURFACES, THEMES } from "./data";
 import { useStore } from "./store";
 import { useTheme } from "./theme";
-import type { Scheme, ThemeId } from "./types";
+import type { Scheme, Surface, ThemeId } from "./types";
 
 const SCHEMES: { id: Scheme; name: string }[] = [
   { id: "light", name: "浅色" },
   { id: "dark", name: "深色" },
 ];
 
+const SURFACE_PATHS = new Set(SURFACES.map((item) => item.path));
+
 export function Shell() {
-  const { theme, scheme, setTheme, setScheme } = useTheme();
+  const { theme, scheme, surface, setTheme, setScheme, setSurface } = useTheme();
   const { toasts, pushToast } = useStore();
+  const navigate = useNavigate();
+  const location = useLocation();
   const schemeName = scheme === "dark" ? "深色" : "浅色";
 
   function chooseTheme(id: ThemeId, name: string) {
@@ -25,6 +29,16 @@ export function Shell() {
     setScheme(id);
     const themeName = THEMES.find((item) => item.id === theme)?.name ?? "青格";
     pushToast(`已换成${themeName}，${name}。`);
+  }
+
+  function chooseSurface(id: Surface, name: string, path: string) {
+    if (id === surface) {
+      if (SURFACE_PATHS.has(location.pathname) && location.pathname !== path) navigate(path);
+      return;
+    }
+    setSurface(id);
+    pushToast(`版面已换成${name}。主题没变。`);
+    if (SURFACE_PATHS.has(location.pathname) || location.pathname === "/board") navigate(path);
   }
 
   return (
@@ -44,17 +58,20 @@ export function Shell() {
             <NavLink to="/" end className={({ isActive }) => (isActive ? "nav-link is-active" : "nav-link")}>
               说明
             </NavLink>
+            {SURFACES.map((item) => (
+              <NavLink
+                key={item.id}
+                to={item.path}
+                className={({ isActive }) => (isActive ? "nav-link is-active" : "nav-link")}
+              >
+                {item.name}
+              </NavLink>
+            ))}
             <NavLink
               to="/gallery"
               className={({ isActive }) => (isActive ? "nav-link is-active" : "nav-link")}
             >
               组件
-            </NavLink>
-            <NavLink
-              to="/board"
-              className={({ isActive }) => (isActive ? "nav-link is-active" : "nav-link")}
-            >
-              工作台
             </NavLink>
           </nav>
           <div className="controls">
@@ -66,6 +83,19 @@ export function Shell() {
                   className="seg-btn"
                   aria-pressed={theme === item.id}
                   onClick={() => chooseTheme(item.id, item.name)}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
+            <div className="seg" role="group" aria-label="版面">
+              {SURFACES.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className="seg-btn"
+                  aria-pressed={surface === item.id}
+                  onClick={() => chooseSurface(item.id, item.name, item.path)}
                 >
                   {item.name}
                 </button>
