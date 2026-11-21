@@ -1,221 +1,105 @@
-# 工单台视觉系统
+# 个人 UI 基础设计契约
 
-三套锁定主题，共用同一套工单台。实现以 `src/styles.css` 为准。这份文件是契约：改界面时先读这里，不要另起一套，也不要把三套折中。
+本仓库用同一套工单、对话和创作样张比较三套视觉、浅色/深色与三档版面。青格是当前产品基线候选，刊次和硬边用于持续比较；最终审美尚未裁定。实现以 [src/tokens.css](src/tokens.css) 的公开语义为先，实验室外观再由 [src/styles.css](src/styles.css) 桥接。
 
-产品是内部工单台，不是文档产品，也不是「折角」。
+## 作用域
 
-两根轴分开。`data-theme` 和 `data-scheme` 只负责视觉：字体性格、颜色、圆角、分层、动效。`data-surface` 只负责版面疏密和信息结构。三套主题都能用阅读、产品、运维。文档里的建议搭配（刊次常配阅读，青格常配产品，硬边常配运维）只是提示，界面不锁定，也不当成默认组合。
+公开使用只依赖两个主题属性：
 
-## 版面 data-surface
-
-同一套视觉 token 流过三种版面。换版面不换色板，不换字体家族，不换圆角和阴影公式。
-
-```yaml
-axis: surface
-attribute: data-surface
-persist: localStorage zhejiao-surface
-default: product
-profiles:
-  reading:
-    name: 阅读
-    route: /reading
-    intent: 说明和长文，不是营销首屏
-    type: 18px，行高 1.75
-    measure: 65ch
-    spacing: 比产品更松，控件更高
-  product:
-    name: 产品
-    route: /product
-    intent: 工单台账、表格、表单
-    type: 16px，行高 1.65
-    spacing: 当前这套紧凑的后台
-  infra:
-    name: 运维
-    route: /infra
-    intent: 状态、数字、日志。不是监控产品的仿制品
-    type: 14px，行高 1.45
-    figures: 等宽数字，编号和时间走 IBM Plex Mono
-    status: 绿 / 黄 / 红只表示通断和缓急
+```html
+<html data-zj-theme="qingge" data-zj-scheme="light">
 ```
 
-运维的状态色是 `--state-ok`、`--state-warn`、`--state-bad`，跟主题的强调色分开。浅色大约是 `#0C7A43`、`#8A5A00`、`#9F1239`；深色大约是 `#3DDC97`、`#E6B15A`、`#FF8D86`。它们不替换青格的青绿、刊次的朱红或硬边的琥珀。
+- `data-zj-theme`：`qingge | kanci | yingbian`
+- `data-zj-scheme`：最终生效的 `light | dark`
+- `data-zj-scheme-mode`：运行时偏好 `system | light | dark`，属于行为层，不属于 token 文件
 
-## 共用
+`tokens.css` 不允许加入 reset、页面布局、网络字体或应用依赖。实验室继续使用旧 `data-theme` / `data-scheme` 选择器，但基础色板只维护一次，旧变量通过 `--zj-*` 集中桥接。
 
-- 技术：Vite、React、TypeScript。主题用 `data-theme`，明暗用 `data-scheme`，版面用 `data-surface`。不使用 Tailwind，也不用组件库的默认紫色。
-- 产品和阅读的正文不小于 16px。阅读长文控制在约 65ch。运维为了更密，界面字号是 14px。行高随字号降低。
-- 中文标签用正常中文，不用全大写拉丁字距。
-- 西文和汉字分开走：字体栈把西文家族放在前面，Noto 放在后面。Google Fonts 的 CSS 已按 `unicode-range` 分包。`font-display: swap`。每套页面的主层级不超过三个字重。
-- 焦点只用 `outline`，不把焦点做成另一层阴影。浅底、深底、实心强调按钮上都要看得见。
-- 动效只使用 `transform` 和 `opacity`。青格、刊次 180ms `ease-out`。硬边 80ms `linear`，按下时平移，不用弹性。`prefers-reduced-motion: reduce` 时去掉过渡。
-- 状态色只表示状态。紧急和校验错误用危险色，不拿来装饰。
-- 表单有中文校验。对话框可用按钮或 Escape 关闭。提示会自己消失。控件都能用键盘到达。
+公开 token 不要求宿主 opt-in 就有任何 `color-scheme` 副作用；原生控件 scheme 只跟随显式 `data-zj-theme` / `data-zj-scheme`。任一主题 scope 都必须恢复完整的字体、圆角、密度与动效角色，嵌套青格时不能继承外层刊次或硬边的字体和直角。
 
-## 青格 qingge
+## 语义 token
 
-克制、清晰、网格、当代。瑞士式的当代产品界面。
+公开变量统一使用 `--zj-` 前缀。稳定的语义分组包括：
 
-```yaml
-id: qingge
-adjectives: [克制, 清晰, 网格, 当代]
-fonts:
-  display: IBM Plex Sans
-  body: IBM Plex Sans
-  chinese: Noto Sans SC
-  mono: IBM Plex Mono
-  weights: [400, 500, 600]
-radius:
-  control: 4px
-  panel: 6px
-layering: 短阴影 + 表面与背景的明度差
-signature: 严格对齐；青绿只出现在链接、主按钮和焦点；组内紧、组间松
-motion: 180ms ease-out
-light:
-  bg: oklch(0.99 0 0)
-  fg: oklch(0.22 0.01 250)
-  muted: oklch(0.55 0.01 250)
-  surface: oklch(0.955 0.004 250)
-  line: oklch(0.9 0.005 250)
-  accent: "#12A594"
-  accentText: "#0F6E66"
-  onAccent: "#F4FFFD"
-  danger: "#9F1239"
-  focus: "#12A594"
-  shadow: 0 1px 2px oklch(0.22 0.01 250 / 0.10), 0 2px 6px oklch(0.22 0.01 250 / 0.05)
-dark:
-  bg: oklch(0.16 0.01 250)
-  fg: oklch(0.96 0 0)
-  muted: oklch(0.78 0.012 250)
-  surface: oklch(0.22 0.014 250)
-  line: oklch(0.32 0.012 250)
-  accent: "#2BBBAD"
-  accentText: "#2BBBAD"
-  onAccent: "#06221F"
-  danger: "#FF8B98"
-  focus: "#2BBBAD"
-```
+- `--zj-color-canvas`、`surface`、`surface-raised`、`surface-muted`、`selected`
+- `--zj-color-text`、`text-muted`、`selected-text`、`selected-muted`
+- `--zj-action-bg`、`action-fg`、`action-hover-bg`、`action-hover-fg`
+- `--zj-color-focus`、`border`、`border-strong`、`danger`、状态色
+- `--zj-font-*`、`--zj-radius-*`、`--zj-space-*`、`--zj-density-*`
+- `--zj-measure-reading`、`--zj-focus-*`、`--zj-motion-*`
 
-浅色主按钮填充保持 `#12A594`，字用近白 `#F4FFFD`。这块对比大约 3.0:1，达不到正文 4.5:1，是锁定色和可读性之间的冲突，记在 `DECISIONS.md`。小字链接改用同色相的 `#0F6E66`（相对浅底约 5.7:1）。实心按钮上的焦点环改用正文色，避免和青绿填充糊在一起；其余焦点跟 `#12A594`。
+颜色语义按用途命名。品牌青绿属于 `accent`，可读的实心动作属于 `action`。弱化状态要同时覆盖普通表面和选中表面，不能只保证一种表面。
 
-深色把强调提到 `#2BBBAD`，仍然是青绿，不是霓虹。按钮上用深色字 `#06221F`（约 7:1）。链接和焦点用同一枚提亮的青绿。
+## 可读性
 
-面板、工单和次按钮只有短阴影，没有描边。输入框靠填色和背景的明度差分开，聚焦时只出现轮廓，不另加一圈阴影。
+正文、普通弱化文字、选中态弱化文字、主动作文字与 hover 文字在六套组合中的设计底线都是 `4.5:1`。输入边界和焦点指示相对相邻表面至少 `3:1`。
 
-## 刊次 kanci
+青格浅色保留品牌青绿 `#12A594` 作点缀；主动作使用更深的 `#0F6E66` 与 `#F4FFFD`，避免把品牌色直接当作所有尺寸都可用的按钮色。其它主题同样把强调色和动作色分开处理。
 
-排版、印刷、权威、冷静。编辑排版，但避开暖奶油底和斜体衬线大标题。
+面板、工单、选中态、按钮与输入都必须用浏览器计算后的真实颜色做回归。测试采样表面包含普通与选中态，不以组件名或源码字符串推断通过。
 
-```yaml
-id: kanci
-adjectives: [排版, 印刷, 权威, 冷静]
-fonts:
-  display: Source Serif 4
-  body: Source Serif 4
-  chineseLongform: Noto Serif SC
-  ui: Noto Sans SC
-  mono: IBM Plex Mono
-  weights: [400, 600]
-radius:
-  control: 2px
-  panel: 2px
-layering: 栏、线、字号和纸层
-signature: 标题下的一条朱红规则线；说明页可用首字下沉和引用破栏
-motion: 180ms ease-out
-light:
-  bg: "#EEF1F3"
-  fg: "#16171A"
-  muted: "#3E4248"
-  paper: "#F6F8F9"
-  paperDeep: "#E2E7EA"
-  accent: "#9B2335"
-  onAccent: "#FFF7F7"
-  danger: "#9B2335"
-  focus: "#9B2335"
-dark:
-  bg: "#121315"
-  fg: "#E6E2DA"
-  muted: "#C4BEB4"
-  paper: "#1C1E21"
-  accent: "#E25A54"
-  onAccent: "#1A0A0C"
-  danger: "#E25A54"
-  focus: "#E25A54"
-```
+## 排版与密度
 
-不用 `#F7F5F2`，不用柿子橙，不用 Fraunces，不用斜体衬线英雄区。长文用衬线，导航、按钮、表单和表格用 Noto Sans SC。说明页有首字下沉，引用破到旁边一栏。组件页和工作台仍是工单台：栏与线，不是杂志封面，也不是圆角卡片墙。
+- 产品和阅读正文不小于 16px，阅读正文为 18px、行高 1.75。
+- 阅读行长使用约 `36ic`，窄屏为 `min(100%, 36ic)`。`ic` 是当前字体中“水”字前进宽度，不能把 `ch` 的单位数当作汉字数。
+- 运维正文为 14px、行高 1.45；表格与表头使用 `--zj-font-size-table` 和密度 padding，不固定 16px。
+- 西文字体放在字体栈前面，中文依次回落后备到 `Noto Sans SC` 或 `Noto Serif SC`、苹方、微软雅黑等系统字体。
+- 在线字体只增强呈现。断网或字体拒绝时，中文系统栈仍必须可用。
+- 中文标签使用正常中文，不用全大写拉丁字母和人为字距伪装层级。
 
-浅色朱红 `#9B2335` 在冷灰纸上约 6.9:1，近白字在按钮上约 7.4:1。深色提到 `#E25A54`（在 `#121315` 上约 5.2:1），按钮用深色字。不要换成霓虹粉。
+## 版面
 
-## 硬边 yingbian
+版面只改变密度和信息结构，不更换视觉主题的色板、字体性格和圆角分层：
 
-硬、直白、高对比、当代。新粗野主义。
+- `reading`：18px 正文、1.75 行高、更松间距、更高控件。
+- `product`：16px 正文、台账与表单的常规密度。
+- `infra`：14px 正文、32px 控件、紧凑日志与状态区；表格继承 14px。
 
-```yaml
-id: yingbian
-adjectives: [硬, 直白, 高对比, 当代]
-fonts:
-  display: Clash Display
-  body: Satoshi
-  chinese: Noto Sans SC
-  mono: IBM Plex Mono
-  weights: [400, 500, 700]
-radius: 0
-border: 3px solid current ink
-shadow: 6px 6px 0 current ink
-layering: 粗实线 + 无模糊偏移阴影
-signature: 这道偏移阴影，不要改成软阴影
-motion: 80ms linear，按下时向阴影方向平移
-light:
-  bg: "#FFFDF5"
-  fg: "#000000"
-  muted: "#2A2A2A"
-  accent: "#FFC53D"
-  onAccent: "#000000"
-  accent2: "#29A383"
-  danger: "#A11D2E"
-  focus: "#000000"
-dark:
-  bg: "#111111"
-  fg: "#FFFDF5"
-  muted: "#E4E0D4"
-  accent: "#FFC53D"
-  onAccent: "#000000"
-  accent2: "#29A383"
-  danger: "#FF8D86"
-  line: "#FFFDF5"
-  shadow: 6px 6px 0 #FFFDF5
-  focus: "#FFFDF5"
-```
+主题与版面是两个独立轴。深链 `/reading`、`/product`、`/infra` 必须与对应版面一致；在非深链页面可只调整疏密。
 
-Clash Display 与 Satoshi 来自 Fontshare，许可证是 ITF Free Font License，不含汉字，所以中文走 Noto Sans SC。标题里的拉丁编号（如 `GD-1079`）用 Clash Display，用来把这套西文显示字体露出来。不要用 Inter。
+## 交互
 
-琥珀 `#FFC53D` 上用黑字（约 13:1）。玉 `#29A383` 只用于「处理中」这类状态；它在奶油底上作为小字不够，状态文字若直接铺在奶油底上改用更深的玉，色块本身仍用 `#29A383` 配黑字。焦点是 3px 实线，偏移到边框外侧，浅色用黑、深色用浅色，避免细虚线消失在黑边上。
+- 一处只放一个主动作；取消、返回和辅助动作使用次按钮或安静按钮。
+- 焦点只用清晰 outline，不使用额外阴影冒充焦点。实心按钮、浅底和深底都要可见。
+- 动效默认使用 token 时长与曲线。`prefers-reduced-motion: reduce` 时必须关闭过渡与对话框动画。
+- 状态色只表达成功、警告、错误与危险，不拿来装饰。
+- 表单必须有中文校验，错误靠近字段，并保留可恢复路径。
+- 对话框使用原生 `<dialog>.showModal()`：背景 inert、Escape、Tab/Shift+Tab 焦点循环、关闭后恢复触发按钮。父组件重渲染不得重置当前对话框焦点；只有对话框边界外的 backdrop 点击可以关闭，内部留白和正文不算 backdrop。
 
-深色保持同一签名：近黑底、浅色字、浅色 3px 边、浅色无模糊偏移阴影。
+## 三套视觉
 
-## 禁令
+三套是可比较方向，不是已经裁定的最终品牌系统。
 
-三套都不要：
+### 青格 qingge
 
-- 折角、蓝绿纸底单据，以及上一版那套色和签名
-- Inter、Roboto、Open Sans、Lato、Montserrat、Poppins，或把系统字体当主字体
-- Space Grotesk、Geist、Instrument Serif、Fraunces
-- 紫或靛蓝渐变，渐变字，玻璃拟态，大面积灰雾阴影，悬浮抬起
-- 三张一模一样的功能卡，眉题加彩色英文单词
-- 用 emoji 当图标
-- 在同一个元素上叠细线边框和弥散阴影
-- 把青格或刊次的大面积底做成纯黑 `#000`（硬边的字和边用纯黑是签名的一部分）
-- 弹性、弹跳动效
+克制、清晰、网格、当代。短阴影与表面明度差形成层级，青绿用于链接、焦点和主动作。主动作与品牌点缀分离，保证小字可读。它是当前产品基线候选，仍可被用户最终否决或调整。
 
-2026 年「奶油底 + 斜体衬线英雄区」已经是新套路。刊次故意不用这条路。
+### 刊次 kanci
 
-## 来源
+排版、印刷、权威、冷静。栏、线、字号和纸层形成层级，朱红只用于规则、链接和主动作。中文长文使用中文衬线后备，界面控件使用中文无衬线后备。
 
-这些来源提供方法和禁令，不是三套主题的视觉稿。没有把 Impeccable、Hallmark、Taste Skill、fluid 装进仓库，也没有拷它们的主题目录。
+### 硬边 yingbian
 
-- [frontend-design-deslop](https://github.com/samber/cc-skills/blob/main/skills/frontend-design-deslop/SKILL.md)，以及其中的 typography、token-sets、aesthetics-library。青格的中性色接近 token set 4，强调色取 Radix Teal 9 `#12A594`。硬边的琥珀和玉接近 token set 3 / Radix Amber、Teal。
-- [Anthropic frontend-design](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md)
-- [Prompting for frontend aesthetics](https://github.com/anthropics/claude-cookbooks/blob/main/coding/prompting_for_frontend_aesthetics.ipynb)
-- [anti-slop-templates](https://github.com/JasonColapietro/anti-slop-templates)：同一套页面、多套锁定系统。没有使用 Folio / Suede 的品牌和色值。
-- [design.md](https://github.com/google-labs-code/design.md/)：用 token 加理由写设计契约。这里覆盖三套，而不是一套。
-- 只作工艺参考，不当视觉稿：[impeccable](https://github.com/pbakaus/impeccable)、[hallmark](https://github.com/Nutlope/hallmark)、[taste-skill](https://github.com/Leonxlnx/taste-skill)、[fluid](https://github.com/Darcos-Loft/fluid)
+硬、直白、高对比、当代。三像素实线与无模糊偏移阴影是签名；浅色与深色都保持粗边、直角和明确层级。按下反馈短促，不使用弹性或弹跳。
+
+## 产品样张
+
+`/patterns` 中文名为“产品样张”，在同一主题状态下并排展示：
+
+- echotalk 式对话、消息列表与输入；
+- Nexty 式创作表单、草稿和预览；
+- 正常、空、加载、错误四种本地状态；
+- 可执行的本地表单动作。
+
+页面明确标注固定样例数据，不发出模型、聊天或创作网络请求。样张用产品结构检查 token，不用营销首屏或装饰遮住信息层级。
+
+场景切换和“重试本地样例”只改变示例状态，保留用户已输入、已发送和已生成的内容。普通消息、选中消息、弱化辅助文字与四种状态文字都用最终渲染色检查对比度。
+
+## 适配边界
+
+echotalk 与 Nexty/biubiuniu 的适配是 opt-in CSS，不默认污染目标应用。目标应用的 `.dark`、next-themes、`data-theme=warm|cool|dark` 与公开 `data-zj-*` 属性由应用状态桥接。具体接线和 root/portal 约束见 [docs/ADOPTION.md](docs/ADOPTION.md)。
+
+adapter 在公开 theme/scheme/adapter 三属性同时命中时，用无 `!important` 的更高 specificity 映射宿主变量，因此真实 `:root`、`.dark` 和 `:root[data-theme]` 规则不会把它带回错误色板；加载顺序和 inline scope 仍有明确约定。
+
+本轮没有跨仓修改，也没有声称任一目标应用已经完成集成。

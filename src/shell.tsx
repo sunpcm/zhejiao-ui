@@ -1,22 +1,32 @@
+import { useEffect } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { SURFACES, THEMES } from "./data";
 import { useStore } from "./store";
 import { useTheme } from "./theme";
-import type { Scheme, Surface, ThemeId } from "./types";
+import type { SchemeMode, Surface, ThemeId } from "./types";
 
-const SCHEMES: { id: Scheme; name: string }[] = [
+const SCHEMES: { id: SchemeMode; name: string }[] = [
+  { id: "system", name: "系统" },
   { id: "light", name: "浅色" },
   { id: "dark", name: "深色" },
 ];
 
 const SURFACE_PATHS = new Set(SURFACES.map((item) => item.path));
+const PATH_SURFACES = new Map(SURFACES.map((item) => [item.path, item.id]));
 
 export function Shell() {
-  const { theme, scheme, surface, setTheme, setScheme, setSurface } = useTheme();
+  const { theme, schemeMode, scheme, surface, setTheme, setSchemeMode, setSurface } = useTheme();
   const { toasts, pushToast } = useStore();
   const navigate = useNavigate();
   const location = useLocation();
   const schemeName = scheme === "dark" ? "深色" : "浅色";
+  const routeSurface = PATH_SURFACES.get(location.pathname);
+
+  useEffect(() => {
+    if (routeSurface && routeSurface !== surface) {
+      setSurface(routeSurface);
+    }
+  }, [routeSurface, setSurface, surface]);
 
   function chooseTheme(id: ThemeId, name: string) {
     if (id === theme) return;
@@ -24,11 +34,12 @@ export function Shell() {
     pushToast(`已换成${name}，${schemeName}。`);
   }
 
-  function chooseScheme(id: Scheme, name: string) {
-    if (id === scheme) return;
-    setScheme(id);
+  function chooseScheme(id: SchemeMode, name: string) {
+    if (id === schemeMode) return;
+    setSchemeMode(id);
     const themeName = THEMES.find((item) => item.id === theme)?.name ?? "青格";
-    pushToast(`已换成${themeName}，${name}。`);
+    const detail = id === "system" ? `跟随系统（当前${schemeName}）` : name;
+    pushToast(`已换成${themeName}，${detail}。`);
   }
 
   function chooseSurface(id: Surface, name: string, path: string) {
@@ -50,9 +61,9 @@ export function Shell() {
         <div className="wrap mast-inner">
           <div className="brand">
             <NavLink to="/" end className="logo-link">
-              <span className="logo">工单台</span>
+              <span className="logo">折角界面实验室</span>
             </NavLink>
-            <p className="brand-note">内部工单与台账</p>
+            <p className="brand-note">个人 UI 基础 · 工单台是产品样张</p>
           </div>
           <nav className="nav" aria-label="页面">
             <NavLink to="/" end className={({ isActive }) => (isActive ? "nav-link is-active" : "nav-link")}>
@@ -72,6 +83,12 @@ export function Shell() {
               className={({ isActive }) => (isActive ? "nav-link is-active" : "nav-link")}
             >
               组件
+            </NavLink>
+            <NavLink
+              to="/patterns"
+              className={({ isActive }) => (isActive ? "nav-link is-active" : "nav-link")}
+            >
+              产品样张
             </NavLink>
           </nav>
           <div className="controls">
@@ -101,13 +118,13 @@ export function Shell() {
                 </button>
               ))}
             </div>
-            <div className="seg" role="group" aria-label="明暗">
+            <div className="seg" role="group" aria-label="明暗偏好">
               {SCHEMES.map((item) => (
                 <button
                   key={item.id}
                   type="button"
                   className="seg-btn"
-                  aria-pressed={scheme === item.id}
+                  aria-pressed={schemeMode === item.id}
                   onClick={() => chooseScheme(item.id, item.name)}
                 >
                   {item.name}

@@ -26,10 +26,14 @@ export function HomePage() {
     <>
       <div className="home-top">
         <div className="home-copy">
-          <h1>同一套工单台，三套看法</h1>
+          <h1>一套可带走的个人 UI 基础</h1>
           <p className="lede">
             <span className="drop">这</span>
-            <span className="lede-body">套页面是内部工单台。视觉是青格、刊次、硬边，三套锁死，互不折中。版面是另一根轴：阅读、产品、运维，三套主题都能用。样张只换视觉。长文在<Link to="/reading">阅读</Link>，台账在<Link to="/product">产品</Link>，状态和日志在<Link to="/infra">运维</Link>。</span>
+            <span className="lede-body">
+              里用青格、刊次、硬边三套可比较方向验证 token、中文排版、密度和交互状态。工单台是产品样张，不是仓库的最终定位；对话与创作工作区在
+              <Link to="/patterns">产品样张</Link>
+              继续检查，工单台账在<Link to="/product">产品</Link>。
+            </span>
           </p>
           <p className="now">
             当前是{current.name}，{schemeName}，{surfaceName}。
@@ -48,6 +52,8 @@ export function HomePage() {
             <article
               key={item.id}
               className={`specimen specimen-${item.id}`}
+              data-zj-theme={item.id}
+              data-zj-scheme="light"
               data-current={theme === item.id ? "true" : "false"}
             >
               <p className="spec-index">{item.index}</p>

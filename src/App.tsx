@@ -7,6 +7,7 @@ import { GalleryPage } from "./pages/gallery";
 import { BoardPage } from "./pages/board";
 import { ReadingPage } from "./pages/reading";
 import { InfraPage } from "./pages/infra";
+import { PatternsPage } from "./pages/patterns";
 
 export function App() {
   return (
@@ -21,6 +22,7 @@ export function App() {
               <Route path="product" element={<BoardPage />} />
               <Route path="board" element={<Navigate to="/product" replace />} />
               <Route path="infra" element={<InfraPage />} />
+              <Route path="patterns" element={<PatternsPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>

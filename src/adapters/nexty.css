@@ -1,0 +1,41 @@
+/*
+ * Opt-in Nexty / biubiuniu shadcn adapter.
+ *
+ * Apply data-zj-adapter="nexty" to the same scoped root that owns the public
+ * zhejiao attributes. Portals rendered under document.body need a matching
+ * scope because CSS custom properties only inherit through their DOM tree.
+ */
+[data-zj-theme][data-zj-scheme][data-zj-adapter="nexty"] {
+  --background: var(--zj-color-canvas);
+  --foreground: var(--zj-color-text);
+  --card: var(--zj-color-surface);
+  --card-foreground: var(--zj-color-text);
+  --popover: var(--zj-color-surface-raised);
+  --popover-foreground: var(--zj-color-text);
+  --primary: var(--zj-action-bg);
+  --primary-foreground: var(--zj-action-fg);
+  --secondary: var(--zj-color-surface-muted);
+  --secondary-foreground: var(--zj-color-text);
+  --muted: var(--zj-color-surface-muted);
+  --muted-foreground: var(--zj-color-text-muted);
+  --accent: var(--zj-color-selected);
+  --accent-foreground: var(--zj-color-selected-text);
+  --destructive: var(--zj-color-danger-bg);
+  --destructive-foreground: var(--zj-color-danger-fg);
+  --border: var(--zj-color-border);
+  --input: var(--zj-color-border-strong);
+  --ring: var(--zj-color-focus);
+  --chart-1: var(--zj-color-accent);
+  --chart-2: var(--zj-state-ok);
+  --chart-3: var(--zj-state-warn);
+  --chart-4: var(--zj-state-bad);
+  --chart-5: var(--zj-color-link);
+  --sidebar: var(--zj-color-surface);
+  --sidebar-foreground: var(--zj-color-text);
+  --sidebar-primary: var(--zj-action-bg);
+  --sidebar-primary-foreground: var(--zj-action-fg);
+  --sidebar-accent: var(--zj-color-selected);
+  --sidebar-accent-foreground: var(--zj-color-selected-text);
+  --sidebar-border: var(--zj-color-border);
+  --sidebar-ring: var(--zj-color-focus);
+}

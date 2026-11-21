@@ -1,0 +1,66 @@
+<!doctype html>
+<html
+  lang="zh-CN"
+  data-theme="cool"
+  data-zj-theme="qingge"
+  data-zj-scheme="light"
+  data-zj-adapter="echotalk"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Echotalk root adapter fixture</title>
+    <style>
+      :root,
+      :root[data-theme="cool"] {
+        --bg: #010203;
+        --surface: #030405;
+        --surface-elevated: #050607;
+        --text: #ffffff;
+        --text-muted: #eeeeee;
+        --border: #111111;
+        --border-strong: #222222;
+        --accent: #330033;
+        --accent-contrast: #ffffff;
+        --accent-hover: #440044;
+        --focus: #ff00ff;
+        --danger: #990000;
+        --danger-contrast: #ffffff;
+        --success: #009900;
+        --warning: #999900;
+        --selection: #550055;
+        --selection-text: #ffffff;
+        --radius-control: 99px;
+        --radius-panel: 99px;
+      }
+
+      body {
+        margin: 0;
+        padding: 16px;
+      }
+
+      #echotalk-rendered {
+        min-height: 120px;
+        padding: 16px;
+        background: var(--bg);
+        color: var(--text);
+        border-radius: var(--radius-panel);
+      }
+
+      #echotalk-action {
+        padding: 8px 12px;
+        background: var(--accent);
+        color: var(--accent-contrast);
+        border-radius: var(--radius-control);
+      }
+    </style>
+    <link rel="stylesheet" href="/src/tokens.css" />
+    <link rel="stylesheet" href="/src/adapters/echotalk.css" />
+  </head>
+  <body>
+    <main id="echotalk-rendered">
+      <p>Echotalk real host root</p>
+      <button id="echotalk-action" type="button">Echotalk action</button>
+    </main>
+  </body>
+</html>

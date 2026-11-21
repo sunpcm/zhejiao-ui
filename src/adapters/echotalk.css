@@ -1,0 +1,28 @@
+/*
+ * Opt-in {EchoTalk} adapter.
+ *
+ * Apply data-zj-adapter="echotalk" to the themed root only. Existing
+ * data-theme="warm|cool|dark" may remain, but the target app must keep its
+ * public zhejiao theme attributes in sync.
+ */
+[data-zj-theme][data-zj-scheme][data-zj-adapter="echotalk"] {
+  --bg: var(--zj-color-canvas);
+  --surface: var(--zj-color-surface);
+  --surface-elevated: var(--zj-color-surface-raised);
+  --text: var(--zj-color-text);
+  --text-muted: var(--zj-color-text-muted);
+  --border: var(--zj-color-border);
+  --border-strong: var(--zj-color-border-strong);
+  --accent: var(--zj-action-bg);
+  --accent-contrast: var(--zj-action-fg);
+  --accent-hover: var(--zj-action-hover-bg);
+  --focus: var(--zj-color-focus);
+  --danger: var(--zj-color-danger);
+  --danger-contrast: var(--zj-color-danger-fg);
+  --success: var(--zj-state-ok);
+  --warning: var(--zj-state-warn);
+  --selection: var(--zj-color-selection);
+  --selection-text: var(--zj-color-selection-text);
+  --radius-control: var(--zj-radius-control);
+  --radius-panel: var(--zj-radius-panel);
+}

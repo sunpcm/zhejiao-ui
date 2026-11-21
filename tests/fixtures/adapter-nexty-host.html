@@ -1,0 +1,70 @@
+<!doctype html>
+<html
+  lang="zh-CN"
+  class="dark"
+  data-zj-theme="qingge"
+  data-zj-scheme="dark"
+  data-zj-adapter="nexty"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nexty root adapter fixture</title>
+    <style>
+      :root {
+        --background: #010203;
+        --foreground: #ffffff;
+        --card: #030405;
+        --card-foreground: #ffffff;
+        --popover: #050607;
+        --popover-foreground: #ffffff;
+        --primary: #330033;
+        --primary-foreground: #ffffff;
+        --secondary: #070809;
+        --secondary-foreground: #ffffff;
+        --muted: #090a0b;
+        --muted-foreground: #eeeeee;
+        --accent: #111111;
+        --accent-foreground: #ffffff;
+        --destructive: #990000;
+        --destructive-foreground: #ffffff;
+        --border: #111111;
+        --input: #222222;
+        --ring: #ff00ff;
+      }
+
+      .dark {
+        --background: #020202;
+        --foreground: #f2f2f2;
+        --primary: #440044;
+        --primary-foreground: #fefefe;
+      }
+
+      body {
+        margin: 0;
+        padding: 16px;
+      }
+
+      #nexty-rendered {
+        min-height: 120px;
+        padding: 16px;
+        background: var(--background);
+        color: var(--foreground);
+      }
+
+      #nexty-action {
+        padding: 8px 12px;
+        background: var(--primary);
+        color: var(--primary-foreground);
+      }
+    </style>
+    <link rel="stylesheet" href="/src/tokens.css" />
+    <link rel="stylesheet" href="/src/adapters/nexty.css" />
+  </head>
+  <body>
+    <main id="nexty-rendered">
+      <p>Nexty real host root</p>
+      <button id="nexty-action" type="button">Nexty action</button>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN" data-zj-theme="kanci" data-zj-scheme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nested theme fixture</title>
+    <link rel="stylesheet" href="/src/tokens.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 16px;
+        display: grid;
+        gap: 16px;
+      }
+
+      section {
+        padding: 12px;
+        background: var(--zj-color-surface);
+        color: var(--zj-color-text);
+      }
+
+      .theme-probe {
+        margin: 8px 0;
+        padding: 8px;
+        border: 1px solid var(--zj-color-border);
+        border-radius: var(--zj-radius-control);
+        font-family: var(--zj-font-body);
+      }
+    </style>
+  </head>
+  <body>
+    <section id="kanci-outer" data-zj-theme="kanci" data-zj-scheme="dark">
+      <div id="kanci-probe" class="theme-probe">Kanci outer</div>
+      <section data-zj-theme="qingge" data-zj-scheme="light">
+        <div id="kanci-qingge-light" class="theme-probe">Qingge light in Kanci</div>
+      </section>
+      <section data-zj-theme="qingge" data-zj-scheme="dark">
+        <div id="kanci-qingge-dark" class="theme-probe">Qingge dark in Kanci</div>
+      </section>
+    </section>
+
+    <section id="yingbian-outer" data-zj-theme="yingbian" data-zj-scheme="dark">
+      <div id="yingbian-probe" class="theme-probe">Yingbian outer</div>
+      <section data-zj-theme="qingge" data-zj-scheme="light">
+        <div id="yingbian-qingge-light" class="theme-probe">Qingge light in Yingbian</div>
+      </section>
+      <section data-zj-theme="qingge" data-zj-scheme="dark">
+        <div id="yingbian-qingge-dark" class="theme-probe">Qingge dark in Yingbian</div>
+      </section>
+    </section>
+
+    <section id="qingge-sibling" data-zj-theme="qingge" data-zj-scheme="light">
+      <div id="qingge-sibling-probe" class="theme-probe">Qingge sibling</div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inline token adapter fixture</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 16px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .host-shell {
+        --bg: #010203;
+        --surface: #030405;
+        --surface-elevated: #050607;
+        --text: #fefefe;
+        --text-muted: #eeeeee;
+        --border: #111111;
+        --border-strong: #222222;
+        --accent: #330033;
+        --accent-contrast: #ffffff;
+        --accent-hover: #440044;
+        --focus: #ff00ff;
+        --danger: #990000;
+        --danger-contrast: #ffffff;
+        --success: #009900;
+        --warning: #999900;
+        --selection: #550055;
+        --selection-text: #ffffff;
+        --radius-control: 99px;
+        --radius-panel: 99px;
+        --background: #010203;
+        --foreground: #fefefe;
+        --card: #030405;
+        --card-foreground: #fefefe;
+        --popover: #050607;
+        --popover-foreground: #fefefe;
+        --primary: #330033;
+        --primary-foreground: #ffffff;
+        --secondary: #070809;
+        --secondary-foreground: #fefefe;
+        --muted: #090a0b;
+        --muted-foreground: #eeeeee;
+        --destructive: #990000;
+        --destructive-foreground: #ffffff;
+        --input: #222222;
+        --ring: #ff00ff;
+      }
+
+      .host-shell.dark {
+        --bg: #010101;
+        --text: #f1f1f1;
+        --background: #020202;
+        --foreground: #f2f2f2;
+      }
+
+      .rendered {
+        min-height: 72px;
+        padding: 12px;
+        background: var(--bg);
+        color: var(--text);
+        border-radius: var(--radius-panel);
+      }
+
+      .rendered button {
+        padding: 6px 10px;
+        background: var(--accent);
+        color: var(--accent-contrast);
+        border-radius: var(--radius-control);
+      }
+
+      .nexty-rendered {
+        min-height: 72px;
+        padding: 12px;
+        background: var(--background);
+        color: var(--foreground);
+      }
+
+      .nexty-rendered button {
+        padding: 6px 10px;
+        background: var(--primary);
+        color: var(--primary-foreground);
+      }
+    </style>
+    <link rel="stylesheet" href="/src/tokens.css" />
+    <link rel="stylesheet" href="/src/adapters/echotalk.css" />
+    <link rel="stylesheet" href="/src/adapters/nexty.css" />
+  </head>
+  <body>
+    <section
+      id="echotalk-inline"
+      class="host-shell dark"
+      data-zj-theme="qingge"
+      data-zj-scheme="dark"
+      data-zj-adapter="echotalk"
+    >
+      <div id="echotalk-rendered" class="rendered">
+        <p>Inline echotalk</p>
+        <button type="button">Echotalk action</button>
+      </div>
+    </section>
+    <section
+      id="nexty-inline"
+      class="host-shell"
+      data-zj-theme="kanci"
+      data-zj-scheme="light"
+      data-zj-adapter="nexty"
+    >
+      <div id="nexty-rendered" class="nexty-rendered">
+        <p>Inline Nexty</p>
+        <button type="button">Nexty action</button>
+      </div>
+    </section>
+  </body>
+</html>

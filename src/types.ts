@@ -2,6 +2,8 @@ export type ThemeId = "qingge" | "kanci" | "yingbian";
 
 export type Scheme = "light" | "dark";
 
+export type SchemeMode = "system" | Scheme;
+
 export type Surface = "reading" | "product" | "infra";
 
 export type Priority = "低" | "中" | "高" | "紧急";
